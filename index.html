@@ -1,1 +1,512 @@
+diff --git a/index.html b/index.html
+new file mode 100644
+index 0000000000000000000000000000000000000000..c9d3c2a6a111c1b550bcf77991b5b67620ddd53b
+--- /dev/null
++++ b/index.html
+@@ -0,0 +1,505 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++  <meta charset="UTF-8" />
++  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
++  <title>Will You Be My Valentine?</title>
++  <link rel="preconnect" href="https://fonts.googleapis.com" />
++  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
++  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
++  <style>
++    :root {
++      --rose-1: #ff5f9e;
++      --rose-2: #ff2e7a;
++      --rose-3: #ffd7e8;
++      --text-main: #fff8fc;
++      --text-dark: #7b1e46;
++      --yes: #ff3f87;
++      --yes-dark: #e91e63;
++      --no: #fff6fa;
++    }
++
++    * {
++      box-sizing: border-box;
++    }
++
++    body {
++      margin: 0;
++      min-height: 100vh;
++      overflow: hidden;
++      display: grid;
++      place-items: center;
++      font-family: 'Poppins', sans-serif;
++      color: var(--text-main);
++      background:
++        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.25), transparent 35%),
++        radial-gradient(circle at 80% 10%, rgba(255, 240, 247, 0.4), transparent 30%),
++        linear-gradient(140deg, #ff9bc4 0%, #ff5f9e 45%, #ff2f77 100%);
++      transition: filter 500ms ease, background 500ms ease;
++      position: relative;
++    }
++
++    body.glow {
++      filter: saturate(1.15) brightness(1.05);
++      background:
++        radial-gradient(circle at 25% 35%, rgba(255, 255, 255, 0.4), transparent 35%),
++        radial-gradient(circle at 75% 15%, rgba(255, 240, 247, 0.45), transparent 30%),
++        linear-gradient(140deg, #ff8ebb 0%, #ff3f8f 45%, #ff236e 100%);
++    }
++
++    .floating-hearts,
++    .confetti-hearts,
++    .cursor-hearts,
++    .forever-particles {
++      position: absolute;
++      inset: 0;
++      pointer-events: none;
++      overflow: hidden;
++    }
++
++    .cursor-hearts,
++    .forever-particles {
++      z-index: 4;
++    }
++
++    .heart {
++      position: absolute;
++      color: rgba(255, 255, 255, 0.7);
++      animation: floatUp linear infinite;
++      text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
++      user-select: none;
++    }
++
++    @keyframes floatUp {
++      from {
++        transform: translateY(110vh) scale(0.7);
++        opacity: 0;
++      }
++      20% {
++        opacity: 0.9;
++      }
++      to {
++        transform: translateY(-20vh) scale(1.15);
++        opacity: 0;
++      }
++    }
++
++    .card {
++      width: min(680px, 92vw);
++      text-align: center;
++      z-index: 2;
++      padding: 2.5rem 2rem 2rem;
++      border-radius: 28px;
++      background: rgba(255, 255, 255, 0.13);
++      backdrop-filter: blur(10px);
++      box-shadow: 0 18px 50px rgba(120, 20, 60, 0.28);
++      border: 1px solid rgba(255, 255, 255, 0.22);
++    }
++
++    h1 {
++      margin: 0;
++      font-family: 'Playfair Display', serif;
++      font-size: clamp(2.2rem, 6vw, 4rem);
++      line-height: 1.15;
++      letter-spacing: 0.02em;
++      text-shadow: 0 3px 12px rgba(125, 18, 62, 0.35);
++    }
++
++    p.subtitle {
++      margin: 1rem auto 1.8rem;
++      max-width: 46ch;
++      color: #ffe7f1;
++      font-size: clamp(1rem, 2vw, 1.2rem);
++    }
++
++    .buttons {
++      position: relative;
++      height: 130px;
++      margin-top: 0.2rem;
++    }
++
++    button {
++      border: 0;
++      border-radius: 999px;
++      font-size: 1.1rem;
++      font-weight: 600;
++      padding: 0.9rem 1.8rem;
++      cursor: pointer;
++      transition: transform 200ms ease, box-shadow 200ms ease;
++      position: absolute;
++      top: 50%;
++      transform: translateY(-50%);
++      font-family: 'Poppins', sans-serif;
++    }
++
++    button:hover {
++      transform: translateY(-50%) scale(1.06);
++    }
++
++    #yesBtn {
++      left: calc(50% - 140px);
++      background: linear-gradient(180deg, var(--yes), var(--yes-dark));
++      color: #fff;
++      box-shadow: 0 10px 22px rgba(233, 30, 99, 0.4);
++      z-index: 2;
++    }
++
++    #noBtn {
++      left: calc(50% + 20px);
++      background: var(--no);
++      color: var(--text-dark);
++      box-shadow: 0 10px 24px rgba(90, 14, 47, 0.18);
++      z-index: 3;
++    }
++
++    .hidden {
++      display: none !important;
++    }
++
++    .love-message {
++      margin-top: 1rem;
++      padding: 1.2rem;
++      border-radius: 20px;
++      background: rgba(255, 255, 255, 0.2);
++      color: #fff;
++      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
++      line-height: 1.5;
++      box-shadow: 0 10px 28px rgba(111, 20, 57, 0.3);
++      opacity: 0;
++      transform: translateY(12px);
++      animation: reveal 800ms ease forwards;
++    }
++
++    @keyframes reveal {
++      to {
++        opacity: 1;
++        transform: translateY(0);
++      }
++    }
++
++    .big-heart {
++      font-size: clamp(4rem, 13vw, 8rem);
++      margin-top: 1rem;
++      filter: drop-shadow(0 0 20px rgba(255, 230, 241, 0.8));
++      animation: beat 880ms infinite ease-in-out;
++      transform-origin: center;
++    }
++
++    @keyframes beat {
++      0%,
++      100% {
++        transform: scale(1);
++      }
++      35% {
++        transform: scale(1.2);
++      }
++      65% {
++        transform: scale(0.93);
++      }
++    }
++
++    .confetti-heart {
++      position: absolute;
++      top: -10vh;
++      font-size: clamp(1rem, 2vw, 1.6rem);
++      animation: fall linear forwards;
++      user-select: none;
++      text-shadow: 0 2px 8px rgba(255, 255, 255, 0.45);
++    }
++
++    @keyframes fall {
++      to {
++        transform: translateY(110vh) rotate(540deg);
++        opacity: 0;
++      }
++    }
++
++    .cursor-heart {
++      position: absolute;
++      font-size: 0.9rem;
++      opacity: 0.9;
++      animation: cursorRise 1.2s ease-out forwards;
++      text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
++    }
++
++    @keyframes cursorRise {
++      0% {
++        transform: translate(-50%, -50%) scale(0.75);
++        opacity: 0.95;
++      }
++      100% {
++        transform: translate(-50%, -150%) scale(1.25);
++        opacity: 0;
++      }
++    }
++
++    .music-toggle {
++      position: fixed;
++      right: 16px;
++      bottom: 16px;
++      z-index: 8;
++      border: 1px solid rgba(255, 255, 255, 0.45);
++      background: rgba(255, 255, 255, 0.2);
++      color: #fff;
++      border-radius: 999px;
++      padding: 0.55rem 0.95rem;
++      font-size: 0.92rem;
++      backdrop-filter: blur(8px);
++      box-shadow: 0 8px 18px rgba(90, 14, 47, 0.2);
++    }
++
++    .forever-text {
++      margin-top: 1rem;
++      font-family: 'Playfair Display', serif;
++      font-size: clamp(2.2rem, 8vw, 5.2rem);
++      font-weight: 700;
++      color: #fff5fb;
++      text-shadow: 0 0 12px rgba(255, 232, 245, 0.9), 0 0 36px rgba(255, 150, 201, 0.9);
++      animation: foreverPulse 1.8s ease-in-out infinite;
++      letter-spacing: 0.03em;
++    }
++
++    @keyframes foreverPulse {
++      0%,
++      100% {
++        transform: scale(1);
++        filter: brightness(1);
++      }
++      50% {
++        transform: scale(1.08);
++        filter: brightness(1.15);
++      }
++    }
++
++    .forever-heart {
++      position: absolute;
++      top: 50%;
++      left: 50%;
++      transform: translate(-50%, -50%);
++      animation: foreverFloat 3.2s ease-out forwards;
++      opacity: 0.75;
++      text-shadow: 0 0 14px rgba(255, 231, 242, 0.8);
++      user-select: none;
++    }
++
++    @keyframes foreverFloat {
++      0% {
++        transform: translate(-50%, -20%) scale(0.8);
++        opacity: 0;
++      }
++      20% {
++        opacity: 0.9;
++      }
++      100% {
++        transform: translate(-50%, -220%) scale(1.3);
++        opacity: 0;
++      }
++    }
++  </style>
++</head>
++<body>
++  <div class="floating-hearts" id="floatingHearts" aria-hidden="true"></div>
++  <div class="confetti-hearts" id="confettiHearts" aria-hidden="true"></div>
++  <div class="cursor-hearts" id="cursorHearts" aria-hidden="true"></div>
++  <div class="forever-particles" id="foreverParticles" aria-hidden="true"></div>
++
++  <main class="card" id="card">
++    <h1>Dipali, will you be my Valentine?</h1>
++    <p class="subtitle">You + me + endless love stories = the perfect forever date. 💌</p>
++
++    <div class="buttons" id="buttonsWrap">
++      <button id="yesBtn" type="button">Yes ❤️</button>
++      <button id="noBtn" type="button">No 💔</button>
++    </div>
++
++    <section id="celebration" class="hidden" aria-live="polite">
++      <p class="love-message">
++        Yay! Dipali, you just made my heart the happiest ❤️<br />
++        You are my forever Valentine. I love you more than words can say.
++      </p>
++      <div class="big-heart" aria-hidden="true">❤️</div>
++      <div class="forever-text">Forever ❤️</div>
++    </section>
++  </main>
++
++  <button id="musicToggle" class="music-toggle" type="button" aria-label="Toggle background music">🔇 Music</button>
++  <audio id="bgMusic" preload="auto" loop>
++    <source src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d1718ab41b.mp3?filename=romantic-piano-loop-6827.mp3" type="audio/mpeg" />
++  </audio>
++
++  <script>
++    const floatingHearts = document.getElementById('floatingHearts');
++    const confettiHearts = document.getElementById('confettiHearts');
++    const cursorHearts = document.getElementById('cursorHearts');
++    const foreverParticles = document.getElementById('foreverParticles');
++    const noBtn = document.getElementById('noBtn');
++    const yesBtn = document.getElementById('yesBtn');
++    const buttonsWrap = document.getElementById('buttonsWrap');
++    const celebration = document.getElementById('celebration');
++    const bgMusic = document.getElementById('bgMusic');
++    const musicToggle = document.getElementById('musicToggle');
++
++    const floatingCount = 26;
++
++    function createFloatingHeart() {
++      const heart = document.createElement('span');
++      heart.className = 'heart';
++      heart.textContent = '❤';
++      heart.style.left = `${Math.random() * 100}%`;
++      heart.style.animationDuration = `${6 + Math.random() * 8}s`;
++      heart.style.animationDelay = `${-Math.random() * 12}s`;
++      heart.style.fontSize = `${0.8 + Math.random() * 1.6}rem`;
++      heart.style.opacity = `${0.4 + Math.random() * 0.5}`;
++      floatingHearts.appendChild(heart);
++    }
++
++    for (let i = 0; i < floatingCount; i += 1) {
++      createFloatingHeart();
++    }
++
++    bgMusic.volume = 0.3;
++    let hasUserInteracted = false;
++    let isMuted = true;
++
++    function playMusicAfterInteraction() {
++      if (hasUserInteracted) {
++        return;
++      }
++
++      hasUserInteracted = true;
++      isMuted = false;
++      bgMusic.muted = false;
++      bgMusic.play().catch(() => {
++        isMuted = true;
++        bgMusic.muted = true;
++      });
++      musicToggle.textContent = isMuted ? '🔇 Music' : '🔊 Music';
++    }
++
++    window.addEventListener('click', playMusicAfterInteraction, { once: true });
++
++    musicToggle.addEventListener('click', () => {
++      if (!hasUserInteracted) {
++        playMusicAfterInteraction();
++      }
++
++      isMuted = !isMuted;
++      bgMusic.muted = isMuted;
++
++      if (!isMuted && bgMusic.paused) {
++        bgMusic.play().catch(() => {
++          isMuted = true;
++          bgMusic.muted = true;
++        });
++      }
++
++      musicToggle.textContent = isMuted ? '🔇 Music' : '🔊 Music';
++    });
++
++    let latestPoint = null;
++    let cursorHeartThrottle = 0;
++    let rafScheduled = false;
++
++    function spawnCursorHeart(x, y) {
++      const heart = document.createElement('span');
++      heart.className = 'cursor-heart';
++      heart.textContent = ['💗', '💕', '💖', '❤️'][Math.floor(Math.random() * 4)];
++      heart.style.left = `${x}px`;
++      heart.style.top = `${y}px`;
++      heart.style.fontSize = `${0.75 + Math.random() * 0.7}rem`;
++      cursorHearts.appendChild(heart);
++      setTimeout(() => heart.remove(), 1300);
++    }
++
++    function handlePointerMove(event) {
++      latestPoint = {
++        x: event.clientX ?? (event.touches && event.touches[0]?.clientX),
++        y: event.clientY ?? (event.touches && event.touches[0]?.clientY)
++      };
++
++      if (rafScheduled) {
++        return;
++      }
++
++      rafScheduled = true;
++      requestAnimationFrame(() => {
++        rafScheduled = false;
++        const now = performance.now();
++        if (!latestPoint || now - cursorHeartThrottle < 45) {
++          return;
++        }
++        cursorHeartThrottle = now;
++        spawnCursorHeart(latestPoint.x, latestPoint.y);
++      });
++    }
++
++    window.addEventListener('pointermove', handlePointerMove, { passive: true });
++
++    function moveNoButton() {
++      const wrapRect = buttonsWrap.getBoundingClientRect();
++      const btnRect = noBtn.getBoundingClientRect();
++
++      const maxX = wrapRect.width - btnRect.width;
++      const maxY = wrapRect.height - btnRect.height;
++
++      const randomX = Math.max(0, Math.random() * maxX);
++      const randomY = Math.max(0, Math.random() * maxY);
++
++      noBtn.style.left = `${randomX}px`;
++      noBtn.style.top = `${randomY}px`;
++      noBtn.style.transform = 'none';
++    }
++
++    noBtn.addEventListener('mouseenter', moveNoButton);
++    noBtn.addEventListener('click', (event) => {
++      event.preventDefault();
++      moveNoButton();
++    });
++
++    function launchHeartConfetti() {
++      const total = 75;
++
++      for (let i = 0; i < total; i += 1) {
++        const confetti = document.createElement('span');
++        confetti.className = 'confetti-heart';
++        confetti.textContent = ['💖', '💘', '💕', '❤️'][Math.floor(Math.random() * 4)];
++        confetti.style.left = `${Math.random() * 100}%`;
++        confetti.style.animationDuration = `${2.8 + Math.random() * 2.8}s`;
++        confetti.style.animationDelay = `${Math.random() * 0.9}s`;
++        confettiHearts.appendChild(confetti);
++
++        setTimeout(() => {
++          confetti.remove();
++        }, 6200);
++      }
++    }
++
++    let foreverInterval;
++
++    function startForeverParticles() {
++      clearInterval(foreverInterval);
++      foreverInterval = setInterval(() => {
++        const heart = document.createElement('span');
++        heart.className = 'forever-heart';
++        heart.textContent = ['💖', '❤️', '💘', '💕'][Math.floor(Math.random() * 4)];
++        heart.style.left = `${42 + Math.random() * 16}%`;
++        heart.style.top = `${44 + Math.random() * 12}%`;
++        heart.style.fontSize = `${1 + Math.random() * 1.4}rem`;
++        foreverParticles.appendChild(heart);
++
++        setTimeout(() => {
++          heart.remove();
++        }, 3200);
++      }, 210);
++    }
++
++    yesBtn.addEventListener('click', () => {
++      buttonsWrap.classList.add('hidden');
++      celebration.classList.remove('hidden');
++      document.body.classList.add('glow');
++      launchHeartConfetti();
++      startForeverParticles();
++    });
++  </script>
++</body>
++</html>
 
